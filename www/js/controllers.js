@@ -25,4 +25,12 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+
+.controller('MybooksCtrl', function($scope, $stateParams){
+  
+})
+
+.controller('NotificationsCtrl', function($scope, $stateParams){
+
 });

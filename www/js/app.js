@@ -48,7 +48,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             .state('tab', {
                 url: '/tab',
                 abstract: true,
-                templateUrl: 'templates/tabs.html'
+                templateUrl: 'templates/layout.html'
             })
 
             // Each tab has its own nav history stack:
@@ -56,7 +56,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/account',
                 views: {
                     'tab-account': {
-                        templateUrl: 'templates/tab-account.html',
+                        templateUrl: 'templates/tabs/tab-account.html',
                         controller: 'AccountCtrl'
                     }
                 }
@@ -66,7 +66,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/mybooks',
                 views: {
                     'tab-mybooks': {
-                        templateUrl: 'templates/tab-mybooks.html',
+                        templateUrl: 'templates/tabs/tab-mybooks.html',
                         controller: 'MybooksCtrl'
                     }
                 }
@@ -76,7 +76,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/dash',
                 views: {
                     'tab-dash': {
-                        templateUrl: 'templates/tab-dash.html',
+                        templateUrl: 'templates/tabs/tab-dash.html',
                         controller: 'DashCtrl'
                     }
                 }
@@ -86,7 +86,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/notifications',
                 views: {
                     'tab-notifications': {
-                        templateUrl: 'templates/tab-notifications.html',
+                        templateUrl: 'templates/tabs/tab-notifications.html',
                         controller: 'NotificationsCtrl'
                     }
                 }
@@ -96,7 +96,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/chats',
                 views: {
                     'tab-chats': {
-                        templateUrl: 'templates/tab-chats.html',
+                        templateUrl: 'templates/tabs/tab-chats.html',
                         controller: 'ChatsCtrl'
                     }
                 }
@@ -105,7 +105,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/chats/:chatId',
                 views: {
                     'tab-chats': {
-                        templateUrl: 'templates/chat-detail.html',
+                        templateUrl: 'templates/details/chat-detail.html',
                         controller: 'ChatDetailCtrl'
                     }
                 }
