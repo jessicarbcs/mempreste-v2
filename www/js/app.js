@@ -52,6 +52,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             })
 
             // Each tab has its own nav history stack:
+            .state('tab.account', {
+                url: '/account',
+                views: {
+                    'tab-account': {
+                        templateUrl: 'templates/tab-account.html',
+                        controller: 'AccountCtrl'
+                    }
+                }
+            })
+
+            .state('tab.mybooks', {
+                url: '/mybooks',
+                views: {
+                    'tab-mybooks': {
+                        templateUrl: 'templates/tab-mybooks.html',
+                        controller: 'MybooksCtrl'
+                    }
+                }
+            })
 
             .state('tab.dash', {
                 url: '/dash',
@@ -59,6 +78,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     'tab-dash': {
                         templateUrl: 'templates/tab-dash.html',
                         controller: 'DashCtrl'
+                    }
+                }
+            })
+
+            .state('tab.notifications', {
+                url: '/notifications',
+                views: {
+                    'tab-notifications': {
+                        templateUrl: 'templates/tab-notifications.html',
+                        controller: 'NotificationsCtrl'
                     }
                 }
             })
@@ -78,16 +107,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     'tab-chats': {
                         templateUrl: 'templates/chat-detail.html',
                         controller: 'ChatDetailCtrl'
-                    }
-                }
-            })
-
-            .state('tab.account', {
-                url: '/account',
-                views: {
-                    'tab-account': {
-                        templateUrl: 'templates/tab-account.html',
-                        controller: 'AccountCtrl'
                     }
                 }
             });
