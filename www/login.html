@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sample FirebaseUI App</title>
+    <!-- *******************************************************************************************
+       * TODO(DEVELOPER): Paste the initialization snippet from:
+       * Firebase Console > Overview > Add Firebase to your web app. *
+       ***************************************************************************************** -->
+
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAUL1Jz6QaNkBv1gtOOPeKhd8NC3Qd2XSs",
+            authDomain: "mempreste.firebaseapp.com",
+            databaseURL: "https://mempreste.firebaseio.com",
+            projectId: "mempreste",
+            storageBucket: "mempreste.appspot.com",
+            messagingSenderId: "1061869024419"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="lib/firebaseui/dist/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="lib/firebaseui/dist/firebaseui.css" />
+    <script type="text/javascript">
+        // FirebaseUI config.
+        var uiConfig = {
+            signInSuccessUrl: '/',
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID
+            ],
+            // Terms of service url.
+            tosUrl: '<your-tos-url>'
+        };
+
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+</head>
+
+<body>
+    <div id="firebaseui-auth-container"></div>
+</body>
+
+</html>
