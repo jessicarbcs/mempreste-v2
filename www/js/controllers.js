@@ -1,7 +1,36 @@
 angular.module('starter.controllers', [])
 
-    .controller('DashCtrl', function ($scope) {
+    .controller('DashCtrl', function ($scope, $ionicLoading) {
+        $scope.googleSignIn = function () {
+            $ionicLoading.show({
+                template: 'Logging in...'
+            });
 
+            window.plugins.googleplus.login(
+                {
+                    'webClientId': '1061869024419-hbovvk7f17k53m1vl7jml8ovus15u8jo.apps.googleusercontent.com'
+                },
+                function (user_data) {
+                    // For the purpose of this example I will store user data on local storage
+                    UserService.setUser({
+                        userID: user_data.userId,
+                        name: user_data.displayName,
+                        email: user_data.email,
+                        picture: user_data.imageUrl,
+                        accessToken: user_data.accessToken,
+                        idToken: user_data.idToken
+                    });
+
+                    $ionicLoading.hide();
+                    $state.go('app.home');
+                },
+                function (msg) {
+                    console.log(msg);
+                    
+                    $ionicLoading.hide();
+                }
+            );
+        };
     })
 
     .controller('ChatsCtrl', function ($scope, Chats) {
