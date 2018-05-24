@@ -48,6 +48,29 @@ angular.module('starter.services', [])
             }
         };
     })
-    .factory('Auth', function ($firebaseAuth) {
-        return $firebaseAuth();
+    .factory('Auth', function ($firebaseAuth, $state) {
+        let fireAuth = $firebaseAuth();
+        let user = undefined;
+        //
+        let login = function (email, password) {
+            fireAuth.$signInWithEmailAndPassword(email, password).then(function (firebaseUser) {
+                user = firebaseUser;
+                $state.go('tab.dash')
+            }).catch(function (error) {
+                console.error("Authentication failed:", error);
+            });
+        };
+        let getUser = function () {
+            return user;
+        }
+        let checkLogin = function () {
+            if (user == undefined)
+                $state.go('login')
+        }
+
+        return {
+            login: login,
+            user: getUser,
+            checkLogin: checkLogin
+        };
     });

@@ -1,0 +1,15 @@
+<ion-view view-title="Login">
+    <ion-content class="padding" style="background-color: #C43C00">
+        <form id="loginForm" name="loginForm" ng-submit="login()">
+            <div class="list" style="margin-top: calc(100% - 180px);">
+                <label class="item item-input">
+                    <input type="text" placeholder="Email" ng-model="cred.email" required>
+                </label>
+                <label class="item item-input">
+                    <input type="password" placeholder="Senha" ng-model="cred.senha" required>
+                </label>
+            </div>
+            <button type="submit" class="google-sign-in button button-block">Login</button>
+        </form>
+    </ion-content>
+</ion-view>
