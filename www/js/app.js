@@ -135,6 +135,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                         controller: 'ChatDetailCtrl'
                     }
                 }
+            })
+
+            .state('livro-add', {
+                url: '/mybooks/:idLivro',
+                params: { time: null },
+                templateUrl: 'templates/details/livro-add.html',
+                controller: 'LivroAddCtrl'
             });
 
         // if none of the above states are matched, use this as the fallback
