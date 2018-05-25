@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
                 firebaseArrays.forEach(fArray => {
                     fArray.$loaded(function () {
                         fArray.forEach(livro => {
-                            if (livro.dono != $scope.user.email)
+                            if (livro.dono.email != $scope.user.email)
                                 $scope.livros.push(livro);
                         })
                     })
@@ -66,6 +66,23 @@ angular.module('starter.controllers', [])
             $scope.user = Auth.user();
             if ($scope.user !== undefined)
                 $scope.livros = $firebaseArray(database.ref($scope.user.uid + "/livros"));
+
+            $scope.livrosComigo = [];
+            let allUsers = $firebaseArray(database.ref("/"));
+            allUsers.$loaded(function () {
+                let firebaseArrays = [];
+                allUsers.forEach(user => {
+                    firebaseArrays.push($firebaseArray(database.ref(user.$id + "/livros")))
+                })
+                firebaseArrays.forEach(fArray => {
+                    fArray.$loaded(function () {
+                        fArray.forEach(livro => {
+                            if (livro.emprestado != false && livro.emprestado.email == $scope.user.email)
+                                $scope.livrosComigo.push(livro);
+                        })
+                    })
+                })
+            })
         }
         $scope.$on('$stateChangeStart', function (event, toState) {
             if (toState.name == "tab.mybooks") {
@@ -86,6 +103,31 @@ angular.module('starter.controllers', [])
     .controller('NotificationsCtrl', function ($scope, $stateParams, Auth) {
     })
 
+    .controller('LivroPedirCtrl', function ($scope, $firebaseObject, $stateParams, $ionicHistory, Auth) {
+        $scope.init = function () {
+            Auth.checkLogin();
+            $scope.user = Auth.user();
+            if ($scope.user !== undefined) {
+            }
+            $scope.livro = $firebaseObject(database.ref($stateParams.idDono + "/livros/" + $stateParams.idLivro));
+        }
+        $scope.$on('$stateChangeStart', function (event, toState) {
+            if (toState.name == "livro-pedir") {
+                $scope.init();
+            }
+        });
+        $scope.init();
+        $scope.pedirEmprestado = function () {
+            Auth.checkLogin();
+            $scope.user = Auth.user();
+            $scope.livro.emprestado = {
+                id: $scope.user.uid,
+                email: $scope.user.email
+            }
+            $scope.livro.$save();
+            $ionicHistory.goBack();
+        }
+    })
     .controller('LivroAddCtrl', function ($scope, $firebaseArray, $ionicTabsDelegate, $ionicHistory, Auth, Books) {
         $scope.init = function () {
             Auth.checkLogin();
@@ -124,7 +166,10 @@ angular.module('starter.controllers', [])
                 if (res.data.items != undefined) {
                     $scope.livro = {
                         volumeInfo: res.data.items[0].volumeInfo,
-                        dono: $scope.user.email,
+                        dono: {
+                            id: $scope.user.uid,
+                            email: $scope.user.email
+                        },
                         emprestado: false
                     }
                     $ionicTabsDelegate._instances.forEach(element => {

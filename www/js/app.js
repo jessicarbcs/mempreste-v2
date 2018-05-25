@@ -143,6 +143,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 params: { time: null },
                 templateUrl: 'templates/details/livro-add.html',
                 controller: 'LivroAddCtrl'
+            })
+            .state('livro-pedir', {
+                url: '/allbooks/:idDono/:idLivro',
+                params: { time: null },
+                templateUrl: 'templates/details/livro-pedir.html',
+                controller: 'LivroPedirCtrl'
             });
 
         // if none of the above states are matched, use this as the fallback

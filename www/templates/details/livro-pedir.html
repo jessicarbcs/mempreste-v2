@@ -1,0 +1,27 @@
+<ion-header-bar align-title="center" class="bar-positive">
+    <div class="buttons">
+        <!-- <button class="button" ng-click="doSomething()">Left Button</button> -->
+    </div>
+    <h1 class="title">LIVRO</h1>
+</ion-header-bar>
+<ion-content>
+    <ion-scroll zooming="true" direction="y">
+        <div class="list" style="padding: 16px">
+            <div class="item" style="text-align: center; border: none;">
+                <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" width="188" height="262">
+            </div>
+            <h2>{{livro.volumeInfo.title}}</h2>
+            <p>
+                <span ng-repeat="autor in livro.volumeInfo.authors">{{autor}}, </span>
+                <span>{{livro.volumeInfo.publishedDate.split('-')[0]}}</span>
+            </p>
+            <p>
+                Dono(a):
+                <span class="dono-livro">{{livro.dono.email}}</span>
+            </p>
+            <button class="button button-positive" style="width: 100%; margin-top: 16px;" ng-click="pedirEmprestado()">
+                PEDIR EMPRESTADO
+            </button>
+        </div>
+    </ion-scroll>
+</ion-content>

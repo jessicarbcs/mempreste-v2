@@ -15,7 +15,7 @@
                     <div class="item" style="color: #FF5D0B">
                         Pendente: implementação na próxima versão
                     </div>
-                    <div class="item" style="padding-top: 0;">
+                    <div class="item" style="padding-top: 0; border: none">
                         <div class="card" ng-repeat="livro in livros" style="width: 45%; margin:0;margin-top: 16px;" ng-style="{'float': $index % 2 !== 0 ? 'right' : 'left'}">
                             <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" height="218">
                         </div>
@@ -32,9 +32,10 @@
                     <div class="item" style="color: #FF5D0B">
                         Pendente: implementação na próxima versão
                     </div>
-                    <div class="item" style="padding-top: 0;">
-                        <div class="card" ng-repeat="livro in livrosEmprestados" style="width: 45%; margin:0;margin-top: 16px;" ng-style="{'float': $index % 2 !== 0 ? 'right' : 'left'}">
+                    <div class="item" style="padding-top: 0; border: none">
+                        <div class="card" ng-repeat="livro in livros | filter:{ emprestado: '!false'}" style="width: 45%; margin:0;margin-top: 16px;" ng-style="{'float': $index % 2 !== 0 ? 'right' : 'left'}">
                             <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" height="218">
+                            <h2>{{livro.emprestado.email}}</h2>                            
                         </div>
                     </div>
                 </div>
@@ -49,9 +50,10 @@
                     <div class="item" style="color: #FF5D0B">
                         Pendente: implementação na próxima versão
                     </div>
-                    <div class="item" style="padding-top: 0;">
+                    <div class="item" style="padding-top: 0; border: none">
                         <div class="card" ng-repeat="livro in livrosComigo" style="width: 45%; margin:0;margin-top: 16px;" ng-style="{'float': $index % 2 !== 0 ? 'right' : 'left'}">
                             <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" height="218">
+                            <h2>{{livro.dono.email}}</h2>
                         </div>
                     </div>
                 </div>
