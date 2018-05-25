@@ -1,14 +1,40 @@
 <ion-header-bar align-title="center" class="bar-positive">
     <div class="buttons">
-        <button class="button" ng-click="doSomething()">Left Button</button>
+        <!-- <button class="button" ng-click="doSomething()">Left Button</button> -->
     </div>
     <h1 class="title">ADICIONAR LIVRO</h1>
 </ion-header-bar>
-<ion-tabs class="tabs-positive tabs-top">
-    <ion-tab title="CÓDIGO ISBN" disabled="true">
+<ion-tabs id="addLivroTabs" class="tabs-positive tabs-top">
+    <ion-tab title="CÓDIGO ISBN">
+        <form class="list" style="margin-top: 100px; padding: 16px" ng-submit="findByIsbn()">
+            <label class="item item-input" style="border-color: #FF9E44">
+                <input type="number" placeholder="Código ISBN" ng-model="search.isbn" required>
+            </label>
+            <button type="submit" class="button button-positive" style="width: 100%; margin-top: 16px;">
+                PROCURAR
+            </button>
+        </form>
     </ion-tab>
 
     <ion-tab title="PREENCHER DADOS">
-        <!-- Tab 2 content -->
+        <ion-scroll zooming="true" direction="y">
+            <form class="list" style="margin-top: 100px; padding: 16px" ng-submit="salvar()">
+                <div class="item" style="text-align: center; border: none;">
+                    <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" width="188" height="262">
+                </div>
+                <label class="item item-input" style="border-color: #FF9E44; margin-top: 16px">
+                    <input type="text" placeholder="Título" ng-model="livro.volumeInfo.title" ng-readonly="true">
+                </label>
+                <label class="item item-input" style="border-color: #FF9E44; margin-top: 16px">
+                    <input type="text" placeholder="Autores" ng-model="livro.volumeInfo.authors" ng-readonly="true">
+                </label>
+                <label class="item item-input" style="border-color: #FF9E44; margin-top: 16px">
+                    <input type="text" placeholder="Editora" ng-model="livro.volumeInfo.publisher" ng-readonly="true">
+                </label>
+                <button type="submit" class="button button-positive" style="width: 100%; margin-top: 16px;">
+                    CONFIRMAR
+                </button>
+            </form>
+        </ion-scroll>
     </ion-tab>
 </ion-tabs>

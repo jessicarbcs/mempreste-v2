@@ -10,25 +10,16 @@ angular.module('starter.controllers', [])
         };
     })
 
-    .controller('DashCtrl', function ($scope, $ionicLoading, Auth, $http) {
+    .controller('DashCtrl', function ($scope, $ionicLoading, Auth, Books, $http) {
         // Auth.checkLogin();
         $scope.livros = [];
-        $http.get('https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter').then(function(res){
+        $http.get('https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter').then(function (res) {
             $scope.livros = res.data.items;
         })
         // console.log($scope);
     })
 
     .controller('ChatsCtrl', function ($scope, Chats, Auth) {
-        // With the new view caching in Ionic, Controllers are only called
-        // when they are recreated or on app start, instead of every page change.
-        // To listen for when this page is active (for example, to refresh data),
-        // listen for the $ionicView.enter event:
-        //
-        $scope.$on('$ionicView.enter', function (e) {
-
-        });
-
         $scope.chats = Chats.all();
         $scope.remove = function (chat) {
             Chats.remove(chat);
@@ -47,7 +38,7 @@ angular.module('starter.controllers', [])
 
     .controller('MybooksCtrl', function ($scope, $stateParams, $state, $firebaseArray, Auth) {
         $scope.init = function () {
-            Auth.checkLogin();
+            // Auth.checkLogin();
             $scope.user = Auth.user();
             if ($scope.user !== undefined)
                 $scope.livros = $firebaseArray(database.ref($scope.user.uid + "/livros"));
@@ -71,31 +62,53 @@ angular.module('starter.controllers', [])
     .controller('NotificationsCtrl', function ($scope, $stateParams, Auth) {
     })
 
-    .controller('LivroAddCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, $ionicTabsDelegate, Auth) {
-        $scope.user = Auth.user();
-        if ($scope.user != null) {
-            if ($stateParams.idLivro != 'new')
-                $scope.livro = $firebaseObject(database.ref($scope.user.uid + "/livros/" + $stateParams.idLivro));
-            else {
+    .controller('LivroAddCtrl', function ($scope, $firebaseArray, $ionicTabsDelegate, $ionicHistory, Auth, Books) {
+        $scope.init = function () {
+            Auth.checkLogin();
+            $scope.user = Auth.user();
+            if ($scope.user !== undefined) {
                 $scope.livros = $firebaseArray(database.ref($scope.user.uid + "/livros"));
                 $scope.livro = {};
             }
+            $scope.search = {
+                isbn: undefined
+            }
         }
+        $scope.$on('$stateChangeStart', function (event, toState) {
+            if (toState.name == "livro-add") {
+                $scope.init();
+            }
+        });
+        $scope.init();
         // Salva as alterações do objeto livro seja ele um livro existente ou um novo cadastrado.
         $scope.salvar = function () {
-            if ($stateParams.idLivro != 'new')
-                $scope.livro.$save();
-            else
-                $scope.livros.$add($scope.livro);
-            $state.go("app.livros")
+            $scope.livros.$add($scope.livro);
+            $ionicHistory.goBack();
         };
         // Retorna para view de livros.
         $scope.cancelar = function () {
-            $state.go("app.livros")
         };
-        // Remove um livro do banco de dados.
-        $scope.remove = function () {
-            $scope.livro.$remove();
-            $state.go("app.livros")
-        }
+        // Busca um livro com base no isbn
+        $scope.findByIsbn = function () {
+            Books.findByIsbn($scope.search.isbn).then(function (res) {
+                let msg = res.data.items != undefined ? 'Livro encontrado' : 'Livro não encontrado'
+                if (window.plugins) {
+                    window.plugins.toast.showLongBottom(msg);
+                } else {
+                    alert(msg)
+                }
+                if (res.data.items != undefined) {
+                    $scope.livro = {
+                        volumeInfo: res.data.items[0].volumeInfo,
+                        dono: $scope.user,
+                        emprestado: false
+                    }
+                    $ionicTabsDelegate._instances.forEach(element => {
+                        if (element.$element[0].id == "addLivroTabs")
+                            element.select(1);
+                    });
+
+                }
+            })
+        };
     });  

@@ -23,3 +23,7 @@ a.tab-item:not(.tab-item-active) {
 .item-thumbnail-left .dono-livro{
     color: #FF5D0B
 }
+
+input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly]{
+    background-color: unset
+}
