@@ -1,4 +1,25 @@
 /* Empty. Add your own CSS if you like */
-a.tab-item:not(.tab-item-active){
+
+a.tab-item:not(.tab-item-active) {
     color: rgba(255, 93, 11, 0.5);
+}
+
+.item-thumbnail-left>img:first-child, .item-thumbnail-left .item-image, .item-thumbnail-left .item-content>img:first-child, .item-thumbnail-left .item-content .item-image {
+    max-width: unset;
+    max-height: unset;
+    width: 86px;
+    height: 120px;
+    /* position: relative;
+    float: left; */
+}
+
+.item-thumbnail-left, .item-thumbnail-left .item-content{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    height: 142px;
+    min-height: 100px;
+}
+
+.item-thumbnail-left .dono-livro{
+    color: #FF5D0B
 }

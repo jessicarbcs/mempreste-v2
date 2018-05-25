@@ -10,13 +10,12 @@ angular.module('starter.controllers', [])
         };
     })
 
-    .controller('DashCtrl', function ($scope, $ionicLoading, Auth) {
-        Auth.checkLogin();
-        $scope.$on('$stateChangeStart', function (event, toState) {
-            if (toState == "tab.dash") {
-
-            }
-        });
+    .controller('DashCtrl', function ($scope, $ionicLoading, Auth, $http) {
+        // Auth.checkLogin();
+        $scope.livros = [];
+        $http.get('https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter').then(function(res){
+            $scope.livros = res.data.items;
+        })
         // console.log($scope);
     })
 
@@ -73,8 +72,6 @@ angular.module('starter.controllers', [])
     })
 
     .controller('LivroAddCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, $ionicTabsDelegate, Auth) {
-        $ionicTabsDelegate.select(2);
-        alert('dude')
         $scope.user = Auth.user();
         if ($scope.user != null) {
             if ($stateParams.idLivro != 'new')
