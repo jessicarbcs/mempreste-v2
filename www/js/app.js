@@ -15,6 +15,7 @@ var config = {
     storageBucket: "mempreste.appspot.com",
     messagingSenderId: "1061869024419"
 };
+
 firebase.initializeApp(config);
 var database = firebase.database();
 

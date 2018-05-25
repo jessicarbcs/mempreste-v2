@@ -48,14 +48,14 @@ angular.module('starter.services', [])
             }
         };
     })
-    .factory('Books', function ($http) {
+    .factory('Books', function ($http, $firebaseArray) {
         return {
             findByIsbn: function (isbn) {
                 return $http.get('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn)
             }
         }
     })
-    
+
     .factory('Auth', function ($firebaseAuth, $state) {
         let fireAuth = $firebaseAuth();
         let user = undefined;

@@ -13,17 +13,21 @@ a.tab-item:not(.tab-item-active) {
     float: left; */
 }
 
-.item-thumbnail-left, .item-thumbnail-left .item-content{
+.item-thumbnail-left, .item-thumbnail-left .item-content {
     padding-top: 8px;
     padding-bottom: 8px;
     height: 142px;
     min-height: 100px;
 }
 
-.item-thumbnail-left .dono-livro{
+.item-thumbnail-left .dono-livro {
     color: #FF5D0B
 }
 
-input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly]{
+input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly] {
     background-color: unset
+}
+
+.tab-item.tab-item-active .tab-title {
+    color: #FFF
 }

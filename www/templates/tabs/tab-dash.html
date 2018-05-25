@@ -6,22 +6,24 @@
 </ion-header-bar>
 <ion-view view-title="Dashboard">
     <ion-content>
-        <div class="list">
-            <div class="item">
-                Resultados encontrados: {{filtered.length}}
-            </div>
-            <a class="item item-thumbnail-left" ng-repeat="livro in filtered = (livros | filter:search)" href="#">
-                <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}">
-                <h2>{{livro.volumeInfo.title}}</h2>
-                <p>
-                    <span ng-repeat="autor in livro.volumeInfo.authors">{{autor}}, </span>
-                    <span>{{livro.volumeInfo.publishedDate.split('-')[0]}}</span>
-                </p>
-                <p>Dono(a):
-                    <span class="dono-livro">{{livro.dono}}Lucas Cavalcante</span>
-                </p>
-            </a>
+        <ion-scroll zooming="true" direction="y">
+            <div class="list">
+                <div class="item">
+                    Resultados encontrados: {{filtered.length}}
+                </div>
+                <a class="item item-thumbnail-left" ng-repeat="livro in filtered = (livros | filter:search)" href="#">
+                    <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}">
+                    <h2>{{livro.volumeInfo.title}}</h2>
+                    <p>
+                        <span ng-repeat="autor in livro.volumeInfo.authors">{{autor}}, </span>
+                        <span>{{livro.volumeInfo.publishedDate.split('-')[0]}}</span>
+                    </p>
+                    <p>Dono(a):
+                        <span class="dono-livro">{{livro.dono}}</span>
+                    </p>
+                </a>
 
-        </div>
+            </div>
+        </ion-scroll>
     </ion-content>
 </ion-view>

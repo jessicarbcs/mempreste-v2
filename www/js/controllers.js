@@ -10,12 +10,36 @@ angular.module('starter.controllers', [])
         };
     })
 
-    .controller('DashCtrl', function ($scope, $ionicLoading, Auth, Books, $http) {
-        // Auth.checkLogin();
-        $scope.livros = [];
-        $http.get('https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter').then(function (res) {
-            $scope.livros = res.data.items;
-        })
+    .controller('DashCtrl', function ($scope, $ionicLoading, Auth, Books, $http, $firebaseArray) {
+        $scope.init = function () {
+            Auth.checkLogin();
+            $scope.user = Auth.user();
+            $scope.livros = [];
+            let allUsers = $firebaseArray(database.ref("/"));
+            allUsers.$loaded(function () {
+                let firebaseArrays = [];
+                allUsers.forEach(user => {
+                    firebaseArrays.push($firebaseArray(database.ref(user.$id + "/livros")))
+                })
+                firebaseArrays.forEach(fArray => {
+                    fArray.$loaded(function () {
+                        fArray.forEach(livro => {
+                            if (livro.dono != $scope.user.email)
+                                $scope.livros.push(livro);
+                        })
+                    })
+                })
+            })
+        };
+        $scope.$on('$stateChangeStart', function (event, toState) {
+            if (toState.name == "tab.dash") {
+                $scope.init();
+            }
+        });
+        $scope.init();
+        // $http.get('https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter').then(function (res) {
+        //     $scope.livros = res.data.items;
+        // })
         // console.log($scope);
     })
 
@@ -38,7 +62,7 @@ angular.module('starter.controllers', [])
 
     .controller('MybooksCtrl', function ($scope, $stateParams, $state, $firebaseArray, Auth) {
         $scope.init = function () {
-            // Auth.checkLogin();
+            Auth.checkLogin();
             $scope.user = Auth.user();
             if ($scope.user !== undefined)
                 $scope.livros = $firebaseArray(database.ref($scope.user.uid + "/livros"));
@@ -100,7 +124,7 @@ angular.module('starter.controllers', [])
                 if (res.data.items != undefined) {
                     $scope.livro = {
                         volumeInfo: res.data.items[0].volumeInfo,
-                        dono: $scope.user,
+                        dono: $scope.user.email,
                         emprestado: false
                     }
                     $ionicTabsDelegate._instances.forEach(element => {
