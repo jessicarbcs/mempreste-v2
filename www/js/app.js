@@ -18,7 +18,6 @@ var config = {
 
 firebase.initializeApp(config);
 var database = firebase.database();
-var storage = firebase.storage();
 
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ion-floating-menu', 'firebase'])
 
