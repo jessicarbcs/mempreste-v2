@@ -7,11 +7,10 @@
     </ion-header-bar>
     <ion-tabs id="meusLivroTabs" class="tabs-positive tabs-top">
         <ion-tab title="MEUS">
-            <ion-floating-button click="add()" has-footer="true" button-color="#424242" icon="ion-plus" icon-color="#fff">
+            <ion-floating-button click="add()" has-footer="true" button-color="#424242" icon-color="#fff">
             </ion-floating-button>
-            <ion-scroll zooming="true" direction="y">
-                <div class="list" style="margin-top: 92px">
-
+            <ion-content>
+                <div class="list" style="padding-bottom: 48px">
                     <div class="item" style="color: #FF5D0B">
                         Pendente: implementação na próxima versão
                     </div>
@@ -21,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-            </ion-scroll>
+            </ion-content>
         </ion-tab>
         <ion-tab title="EMPRESTEI">
             <ion-floating-button click="add()" has-footer="true" button-color="#424242" icon="ion-plus" icon-color="#fff">
@@ -35,7 +34,7 @@
                     <div class="item" style="padding-top: 0; border: none">
                         <div class="card" ng-repeat="livro in livros | filter:{ emprestado: '!false'}" style="width: 45%; margin:0;margin-top: 16px;" ng-style="{'float': $index % 2 !== 0 ? 'right' : 'left'}">
                             <img ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" height="218">
-                            <h2>{{livro.emprestado.email}}</h2>                            
+                            <h2>{{livro.emprestado.email}}</h2>
                         </div>
                     </div>
                 </div>

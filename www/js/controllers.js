@@ -37,10 +37,6 @@ angular.module('starter.controllers', [])
             }
         });
         $scope.init();
-        // $http.get('https://www.googleapis.com/books/v1/volumes?q=intitle:harry+potter').then(function (res) {
-        //     $scope.livros = res.data.items;
-        // })
-        // console.log($scope);
     })
 
     .controller('ChatsCtrl', function ($scope, Chats, Auth) {
@@ -134,7 +130,17 @@ angular.module('starter.controllers', [])
             $scope.user = Auth.user();
             if ($scope.user !== undefined) {
                 $scope.livros = $firebaseArray(database.ref($scope.user.uid + "/livros"));
-                $scope.livro = {};
+                $scope.livro = {
+                    volumeInfo: {
+                        imageLinks: {
+                        }
+                    },
+                    dono: {
+                        id: $scope.user.uid,
+                        email: $scope.user.email
+                    },
+                    emprestado: false
+                };
             }
             $scope.search = {
                 isbn: undefined
@@ -148,6 +154,9 @@ angular.module('starter.controllers', [])
         $scope.init();
         // Salva as alterações do objeto livro seja ele um livro existente ou um novo cadastrado.
         $scope.salvar = function () {
+            if(!$scope.isByISBN){
+                $scope.livro.volumeInfo.authors = [$scope.livro.volumeInfo.authors]
+            }
             $scope.livros.$add($scope.livro);
             $ionicHistory.goBack();
         };
@@ -172,6 +181,7 @@ angular.module('starter.controllers', [])
                         },
                         emprestado: false
                     }
+                    $scope.isByISBN = true;
                     $ionicTabsDelegate._instances.forEach(element => {
                         if (element.$element[0].id == "addLivroTabs")
                             element.select(1);
@@ -179,5 +189,17 @@ angular.module('starter.controllers', [])
 
                 }
             })
+        };
+        
+        // Ler o arquivo de foto selecionado
+        $scope.uploadFile = function (files) {
+            $scope.arquivoImg = files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $scope.$apply(function () {
+                    $scope.livro.volumeInfo.imageLinks.thumbnail = e.target.result;
+                });
+            };
+            reader.readAsDataURL($scope.arquivoImg);
         };
     });  
