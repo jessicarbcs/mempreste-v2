@@ -61,8 +61,8 @@ angular.module('starter.services', [])
         let user = undefined;
         //
         let login = function (email, password) {
-            fireAuth.$signInWithEmailAndPassword(email, password).then(function (firebaseUser) {
-                user = firebaseUser;
+            fireAuth.$signInWithEmailAndPassword(email, password).then(function (res) {
+                user = res.user;
                 $state.go('tab.dash')
             }).catch(function (error) {
                 console.error("Authentication failed:", error);
