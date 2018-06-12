@@ -20,12 +20,21 @@
         <ion-scroll zooming="true" direction="y">
             <form class="list" style="margin-top: 100px; padding: 16px" ng-submit="salvar()">
                 <div class="item" style="text-align: center; border: none; display: flex; align-items: center; justify-content: center;">
-                    <img ng-show="livro.volumeInfo.imageLinks.thumbnail != undefined" ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" width="188" height="262">
-                    <div ng-show="livro.volumeInfo.imageLinks.thumbnail == undefined" style="width: 188px; height: 262px; border: 1px solid #6D6D6D; display: flex; align-items: center; justify-content: center; border-radius: 4px">
-                        <button onclick="imgUpload.click(); return false;" style="width: 56px; height: 56px; background: #424242; color: #FFF; border: none; border-radius: 100%;">
+                    <img ng-show="livro.volumeInfo.imageLinks.thumbnail != undefined" ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" width="188"
+                        height="262">
+                    <div ng-show="livro.volumeInfo.imageLinks.thumbnail == undefined" style="width: 188px; height: 262px; border: 1px solid #6D6D6D; display: flex; align-items: center; justify-content: center; border-radius: 4px; flex-direction: column;">
+                        <button ng-if="!hasCamera" onclick="imgUpload.click(); return false;" style="width: 56px; height: 56px; background: #424242; color: #FFF; border: none; border-radius: 100%; display: flex; align-items: center; justify-content: center;">
+                            <ion-icon name="cloud-upload"></ion-icon>
+                        </button>
+                        <input ng-if="!hasCamera" id="imgUpload" type="file" name="file" onchange="angular.element(this).scope().uploadFileFromInput(this.files)"
+                            style="display: none" />
+
+                        <button type="button" ng-if="hasCamera" ng-click="takePhoto()" style="width: 56px; height: 56px; background: #424242; color: #FFF; border: none; border-radius: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 8px">
                             <ion-icon name="camera"></ion-icon>
                         </button>
-                        <input id="imgUpload" type="file" name="file" onchange="angular.element(this).scope().uploadFile(this.files)" style="display: none" />
+                        <button type="button" ng-if="hasCamera" ng-click="selectImg()" style="width: 56px; height: 56px; background: #424242; color: #FFF; border: none; border-radius: 100%; display: flex; align-items: center; justify-content: center;">
+                            <ion-icon name="cloud-upload"></ion-icon>
+                        </button>
                     </div>
                 </div>
                 <label class="item item-input" style="border-color: #FF9E44; margin-top: 16px">

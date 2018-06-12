@@ -124,7 +124,7 @@ angular.module('starter.controllers', [])
             $ionicHistory.goBack();
         }
     })
-    .controller('LivroAddCtrl', function ($scope, $firebaseArray, $ionicTabsDelegate, $ionicHistory, Auth, Books) {
+    .controller('LivroAddCtrl', function ($scope, $firebaseArray, $ionicTabsDelegate, $ionicHistory, $ionicLoading, $ionicPopup, Auth, Books) {
         $scope.init = function () {
             Auth.checkLogin();
             $scope.user = Auth.user();
@@ -145,6 +145,7 @@ angular.module('starter.controllers', [])
             $scope.search = {
                 isbn: undefined
             }
+            $scope.hasCamera = navigator.camera !== undefined;
         }
         $scope.$on('$stateChangeStart', function (event, toState) {
             if (toState.name == "livro-add") {
@@ -154,7 +155,7 @@ angular.module('starter.controllers', [])
         $scope.init();
         // Salva as alterações do objeto livro seja ele um livro existente ou um novo cadastrado.
         $scope.salvar = function () {
-            if(!$scope.isByISBN){
+            if (!$scope.isByISBN) {
                 $scope.livro.volumeInfo.authors = [$scope.livro.volumeInfo.authors]
             }
             $scope.livros.$add($scope.livro);
@@ -190,9 +191,8 @@ angular.module('starter.controllers', [])
                 }
             })
         };
-        
         // Ler o arquivo de foto selecionado
-        $scope.uploadFile = function (files) {
+        $scope.uploadFileFromInput = function (files) {
             $scope.arquivoImg = files[0];
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -202,4 +202,79 @@ angular.module('starter.controllers', [])
             };
             reader.readAsDataURL($scope.arquivoImg);
         };
+
+        // Seleciona uma imagem da galeria
+        $scope.selectImg = function () {
+            var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            var options = setOptions(srcType);
+
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+            navigator.camera.getPicture(function cameraSuccess(imageUri) {
+                var img = new Image();
+                img.src = imageUri;
+                img.onload = (() => {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    var dataURL = canvas.toDataURL("image/png");
+
+                    $scope.$apply(function () {
+                        $scope.livro.volumeInfo.imageLinks.thumbnail = dataURL;
+                        $ionicLoading.hide()
+                    });
+                });
+            }, function cameraError(error) {
+                console.debug("Unable to obtain picture: " + error, "app"); 
+                $ionicLoading.hide();
+            }, options);
+        }
+        
+        // Tira uma foto
+        $scope.takePhoto = function () {
+            var srcType = Camera.PictureSourceType.CAMERA;
+            var options = setOptions(srcType);
+
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+            navigator.camera.getPicture(function cameraSuccess(imageUri) {
+                var img = new Image();
+                img.src = imageUri;
+                img.onload = (() => {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    var dataURL = canvas.toDataURL("image/png");
+
+                    $scope.$apply(function () {
+                        $scope.livro.volumeInfo.imageLinks.thumbnail = dataURL;
+                        $ionicLoading.hide()
+                    });
+                });
+            }, function cameraError(error) {
+                console.debug("Unable to obtain picture: " + error, "app"); 
+                $ionicLoading.hide();
+            }, options);
+        }
+
+        function setOptions(srcType) {
+            var options = {
+                // Some common settings are 20, 50, and 100
+                quality: 50,
+                destinationType: Camera.DestinationType.FILE_URI,
+                // In this app, dynamically set the picture source, Camera or photo gallery
+                sourceType: srcType,
+                encodingType: Camera.EncodingType.JPEG,
+                mediaType: Camera.MediaType.PICTURE,
+                allowEdit: true,
+                correctOrientation: true  //Corrects Android orientation quirks
+            }
+            return options;
+        }
     });  
