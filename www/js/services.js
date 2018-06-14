@@ -1,50 +1,40 @@
 angular.module('starter.services', [])
 
-    .factory('Chats', function ($q, $firebaseObject) {
-        // Might use a resource here that returns a JSON array
-
-        // Some fake testing data
-        var chats = [{
-            id: 0,
-            name: 'Ben Sparrow',
-            lastText: 'You on your way?',
-            face: 'img/ben.png'
-        }, {
-            id: 1,
-            name: 'Max Lynx',
-            lastText: 'Hey, it\'s me',
-            face: 'img/max.png'
-        }, {
-            id: 2,
-            name: 'Adam Bradleyson',
-            lastText: 'I should buy a boat',
-            face: 'img/adam.jpg'
-        }, {
-            id: 3,
-            name: 'Perry Governor',
-            lastText: 'Look at my mukluks!',
-            face: 'img/perry.png'
-        }, {
-            id: 4,
-            name: 'Mike Harrington',
-            lastText: 'This is wicked good ice cream.',
-            face: 'img/mike.png'
-        }];
-
+    .factory('Chats', function ($q, $firebaseArray) {
         return {
-            all: function () {
-                return chats;
-            },
-            remove: function (chat) {
-                chats.splice(chats.indexOf(chat), 1);
-            },
-            get: function (chatId) {
-                for (var i = 0; i < chats.length; i++) {
-                    if (chats[i].id === parseInt(chatId)) {
-                        return chats[i];
-                    }
+            pedidoEmprestimo: function (livro, pedinte) {
+                let chat = {
+                    livro: {
+                        uid: livro.$id,
+                        nome: livro.volumeInfo.title,
+                        dono: {
+                            nome: livro.dono.email,
+                            uid: livro.dono.id
+                        },
+                        pedinte: {
+                            nome: pedinte.email,
+                            uid: pedinte.uid
+                        }
+                    },
+                    msgs: [
+                        // msg especial de confirmação de entrega
+                        {
+                            msg: "Empresta aí vai",
+                            user: {
+                                nome: pedinte.email,
+                                uid: pedinte.uid
+                            }
+                        }
+                    ]
                 }
-                return null;
+                $firebaseArray(database.ref('chats')).$loaded(function(data){
+                    data.$add(chat)
+                    console.log(chat);
+                    
+                })
+            },
+            chatsByUserAsPedinte: function (pedinte){
+                return $firebaseArray(database.ref().child('chats').orderByChild('livro/pedinte/uid').equalTo(pedinte.uid));
             }
         };
     })

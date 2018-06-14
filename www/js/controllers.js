@@ -159,13 +159,20 @@ angular.module('starter.controllers', [])
     .controller('NotificationsCtrl', function ($scope, $stateParams, Auth) {
     })
 
-    .controller('LivroPedirCtrl', function ($scope, $firebaseObject, $stateParams, $ionicHistory, Auth) {
+    .controller('LivroPedirCtrl', function ($scope, $firebaseObject, $stateParams, $ionicHistory, $ionicPopup, Auth, Chats) {
         $scope.init = function () {
             Auth.checkLogin();
             $scope.user = Auth.user();
             if ($scope.user !== undefined) {
             }
             $scope.livro = $firebaseObject(database.ref($stateParams.idDono + "/livros/" + $stateParams.idLivro));
+            Chats.chatsByUserAsPedinte($scope.user).$loaded(function (chats) {
+                chats.forEach(chat => {
+                    // Implementar estado do chat
+                    if (chat.livro.uid == $stateParams.idLivro)
+                        $scope.pedidoRealizado = true
+                });
+            });
         }
         $scope.$on('$stateChangeStart', function (event, toState) {
             if (toState.name == "livro-pedir") {
@@ -174,14 +181,17 @@ angular.module('starter.controllers', [])
         });
         $scope.init();
         $scope.pedirEmprestado = function () {
-            Auth.checkLogin();
-            $scope.user = Auth.user();
-            $scope.livro.emprestado = {
-                id: $scope.user.uid,
-                email: $scope.user.email
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Confirmar Pedido de empréstimo'
+            });
+
+            confirmPopup.then(function (res) {
+                if (res) {
+                    Chats.pedidoEmprestimo($scope.livro, $scope.user)
+                    $ionicHistory.goBack();
             }
-            $scope.livro.$save();
-            $ionicHistory.goBack();
+            });
+
         }
     })
     .controller('LivroAddCtrl', function ($scope, $firebaseArray, $ionicTabsDelegate, $ionicHistory, $ionicLoading, $ionicPopup, Auth, Books) {

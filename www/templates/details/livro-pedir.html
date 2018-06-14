@@ -19,7 +19,7 @@
                 Dono(a):
                 <span class="dono-livro">{{livro.dono.email}}</span>
             </p>
-            <button class="button button-positive" style="width: 100%; margin-top: 16px;" ng-click="pedirEmprestado()">
+            <button class="button button-positive" style="width: 100%; margin-top: 16px;" ng-click="pedirEmprestado()" ng-disabled="pedidoRealizado">
                 PEDIR EMPRESTADO
             </button>
         </div>
