@@ -8,7 +8,6 @@ angular.module('starter.controllers', [])
         $scope.login = function () {
             Auth.login($scope.cred.email, $scope.cred.senha)
         };
-        Auth.login("jessicarcarvalho@hotmail.com", "123456")
     })
 
     .controller('DashCtrl', function ($scope, $ionicLoading, Auth, Books, $http, $firebaseArray) {
