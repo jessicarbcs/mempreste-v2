@@ -8,6 +8,7 @@ angular.module('starter.controllers', [])
         $scope.login = function () {
             Auth.login($scope.cred.email, $scope.cred.senha)
         };
+        Auth.login("jessicarcarvalho@hotmail.com", "123456")
     })
 
     .controller('DashCtrl', function ($scope, $ionicLoading, Auth, Books, $http, $firebaseArray) {
@@ -39,15 +40,75 @@ angular.module('starter.controllers', [])
         $scope.init();
     })
 
-    .controller('ChatsCtrl', function ($scope, Chats, Auth) {
-        $scope.chats = Chats.all();
+    .controller('ChatsCtrl', function ($scope, $firebaseArray, Chats, Auth) {
+        $scope.init = function () {
+            Auth.checkLogin();
+            $scope.user = Auth.user();
+            $scope.loadChats();
+        }
+
+        $scope.loadChats = function () {
+            let refAsPedinte = database.ref('chats');
+            $scope.msgs = new Array();
+            $firebaseArray(refAsPedinte).$loaded(function (data) {
+                data.forEach(element => {
+                    let pessoa = undefined;
+                    if (element.livro.dono.uid == $scope.user.uid)
+                        pessoa = element.livro.pedinte;
+                    else if (element.livro.pedinte.uid == $scope.user.uid)
+                        pessoa = element.livro.dono;
+                    if (pessoa != undefined)
+                        $scope.msgs.push({
+                            id: element.$id,
+                            pessoa: pessoa,
+                            livro: element.livro
+                        });
+                });
+            });
+        }
+        $scope.$on('$stateChangeStart', function (event, toState) {
+            if (toState.name == "tab.chats") {
+                $scope.init();
+            }
+        });
+        $scope.init();
+        //
         $scope.remove = function (chat) {
             Chats.remove(chat);
         };
     })
 
-    .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats, Auth) {
-        $scope.chat = Chats.get($stateParams.chatId);
+    .controller('ChatDetailCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, Chats, Auth) {
+        $scope.init = function () {
+            Auth.checkLogin();
+            $scope.user = Auth.user();
+            $scope.chat = $firebaseObject(database.ref('chats/' + $stateParams.chatId));
+            $scope.msgs = $firebaseArray(database.ref('chats/' + $stateParams.chatId + '/msgs'));
+
+            if ($scope.user) {
+                $scope.msgToSave = {
+                    user: {
+                        uid: $scope.user.uid,
+                        email: $scope.user.email
+                    },
+                    msg: ''
+                }
+            }
+        }
+        $scope.$on('$stateChangeStart', function (event, toState) {
+            if (toState.name == "tab.chat-detail") {
+                $scope.init();
+            }
+        });
+        $scope.init();
+        //
+        $scope.isReceived = function (msg) {
+            return msg.user.uid != $scope.user.uid;
+        }
+        $scope.send = function () {
+            $scope.msgs.$add($scope.msgToSave);
+            $scope.msgToSave.msg = "";
+        }
     })
 
     .controller('AccountCtrl', function ($scope, Auth) {
@@ -228,11 +289,11 @@ angular.module('starter.controllers', [])
                     });
                 });
             }, function cameraError(error) {
-                console.debug("Unable to obtain picture: " + error, "app"); 
+                console.debug("Unable to obtain picture: " + error, "app");
                 $ionicLoading.hide();
             }, options);
         }
-        
+
         // Tira uma foto
         $scope.takePhoto = function () {
             var srcType = Camera.PictureSourceType.CAMERA;
@@ -258,7 +319,7 @@ angular.module('starter.controllers', [])
                     });
                 });
             }, function cameraError(error) {
-                console.debug("Unable to obtain picture: " + error, "app"); 
+                console.debug("Unable to obtain picture: " + error, "app");
                 $ionicLoading.hide();
             }, options);
         }

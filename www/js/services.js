@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 
-    .factory('Chats', function () {
+    .factory('Chats', function ($q, $firebaseObject) {
         // Might use a resource here that returns a JSON array
 
         // Some fake testing data

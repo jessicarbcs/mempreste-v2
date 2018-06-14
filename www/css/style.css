@@ -31,3 +31,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 .tab-item.tab-item-active .tab-title {
     color: #FFF
 }
+
+.msg-send {
+text-align: right;
+}
