@@ -16,25 +16,15 @@ angular.module('starter.services', [])
                             uid: pedinte.uid
                         }
                     },
-                    msgs: [
-                        // msg especial de confirmação de entrega
-                        {
-                            msg: "Empresta aí vai",
-                            user: {
-                                nome: pedinte.email,
-                                uid: pedinte.uid
-                            }
-                        }
-                    ]
+                    status: 0
                 }
                 $firebaseArray(database.ref('chats')).$loaded(function(data){
                     data.$add(chat)
-                    console.log(chat);
-                    
                 })
             },
             chatsByUserAsPedinte: function (pedinte){
-                return $firebaseArray(database.ref().child('chats').orderByChild('livro/pedinte/uid').equalTo(pedinte.uid));
+                let ref = $firebaseArray(database.ref().child('chats').orderByChild('livro/pedinte/uid').equalTo(pedinte.uid));
+                return ref;
             }
         };
     })
