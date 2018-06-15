@@ -77,12 +77,58 @@ angular.module('starter.controllers', [])
         };
     })
 
-    .controller('ChatDetailCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, Chats, Auth) {
+    .controller('ChatDetailCtrl', function ($scope, $stateParams, $firebaseObject, $firebaseArray, $ionicPopup, Chats, Auth) {
+        $scope.checkBtEspecial = function () {
+            $scope.chatEncerrado = false;
+            if ($scope.chat.status == undefined || $scope.chat.status == 0)
+                if ($scope.chat.livro.dono.uid == $scope.user.uid) {
+                    $scope.msgBotaoEspecial = "CONFIRMAR EMPRÉSTIMO";
+                    $scope.disableBtEspecial = false;
+                } else {
+                    $scope.msgBotaoEspecial = "AGUARDANDO CONFIRMAÇÃO"
+                    $scope.disableBtEspecial = true;
+                }
+            else if ($scope.chat.status == 1)
+                if ($scope.chat.livro.dono.uid == $scope.user.uid) {
+                    $scope.msgBotaoEspecial = "PEDIR DEVOLUÇÃO";
+                    $scope.disableBtEspecial = false;
+                } else {
+                    $scope.msgBotaoEspecial = "DEVOLVER"
+                    $scope.disableBtEspecial = false;
+                }
+            else if ($scope.chat.status == 1.1)
+                if ($scope.chat.livro.dono.uid == $scope.user.uid) {
+                    $scope.msgBotaoEspecial = "AGUARDANDO DEVOLUÇÃO";
+                    $scope.disableBtEspecial = true;
+                } else {
+                    $scope.msgBotaoEspecial = "DEVOLVER"
+                    $scope.disableBtEspecial = false;
+                }
+            else if ($scope.chat.status == 2)
+                if ($scope.chat.livro.dono.uid == $scope.user.uid) {
+                    $scope.msgBotaoEspecial = "CONFIRMAR DEVOLUÇÃO";
+                    $scope.disableBtEspecial = false;
+                } else {
+                    $scope.msgBotaoEspecial = "AGUARDANDO CONFIRMAÇÃO"
+                    $scope.disableBtEspecial = true;
+                }
+            else {
+                $scope.msgBotaoEspecial = "DEVOLVIDO"
+                $scope.disableBtEspecial = true;
+                $scope.chatEncerrado = true;
+            }
+
+
+        }
         $scope.init = function () {
             Auth.checkLogin();
             $scope.user = Auth.user();
             $scope.chat = $firebaseObject(database.ref('chats/' + $stateParams.chatId));
             $scope.msgs = $firebaseArray(database.ref('chats/' + $stateParams.chatId + '/msgs'));
+
+            $scope.chat.$loaded(function () {
+                $scope.checkBtEspecial();
+            });
 
             if ($scope.user) {
                 $scope.msgToSave = {
@@ -91,6 +137,112 @@ angular.module('starter.controllers', [])
                         email: $scope.user.email
                     },
                     msg: ''
+                }
+            }
+            $scope.execBtEspecial = function () {
+                if ($scope.chat.status == undefined || $scope.chat.status == 0) {
+                    if ($scope.chat.livro.dono.uid == $scope.user.uid) {
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Confirmar empréstimo ?'
+                        });
+
+                        confirmPopup.then(function (res) {
+                            $scope.chat.status = 1;
+                            $scope.chat.$save().then(function () {
+                                $scope.msgs.$add({
+                                    msg: "Confirmou o empréstimo do livro",
+                                    user: {
+                                        email: $scope.user.email,
+                                        uid: $scope.user.uid
+                                    },
+                                    isEspecial: true
+                                });
+                                $scope.checkBtEspecial();
+                            });
+                        });
+                    }
+                } else if ($scope.chat.status == 1) {
+                    if ($scope.chat.livro.dono.uid == $scope.user.uid) {
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Confirmar pedido de devolução ?'
+                        });
+
+                        confirmPopup.then(function (res) {
+                            $scope.chat.status = 1.1;
+                            $scope.chat.$save().then(function () {
+                                $scope.msgs.$add({
+                                    msg: "Solicitou a devolução do livro",
+                                    user: {
+                                        email: $scope.user.email,
+                                        uid: $scope.user.uid
+                                    },
+                                    isEspecial: true
+                                });
+                                $scope.checkBtEspecial();
+                            });
+                        });
+                    } else {
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Confirmar devolução ?'
+                        });
+
+                        confirmPopup.then(function (res) {
+                            $scope.chat.status = 2;
+                            $scope.chat.$save().then(function () {
+                                $scope.msgs.$add({
+                                    msg: "Confirmou a devolução do livro",
+                                    user: {
+                                        email: $scope.user.email,
+                                        uid: $scope.user.uid
+                                    },
+                                    isEspecial: true
+                                });
+                                $scope.checkBtEspecial();
+                            });
+                        });
+                    }
+                } else if ($scope.chat.status == 1.1) {
+                    if ($scope.chat.livro.pedinte.uid == $scope.user.uid) {
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Confirmar devolução ?'
+                        });
+
+                        confirmPopup.then(function (res) {
+                            $scope.chat.status = 2;
+                            $scope.chat.$save().then(function () {
+                                $scope.msgs.$add({
+                                    msg: "Confirmou a devolução do livro",
+                                    user: {
+                                        email: $scope.user.email,
+                                        uid: $scope.user.uid
+                                    },
+                                    isEspecial: true
+                                });
+                                $scope.checkBtEspecial();
+                            });
+                        });
+                    }
+                } else if ($scope.chat.status == 2) {
+                    if ($scope.chat.livro.dono.uid == $scope.user.uid) {
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Confirmar devolução ?'
+                        });
+
+                        confirmPopup.then(function (res) {
+                            $scope.chat.status = 3;
+                            $scope.chat.$save().then(function () {
+                                $scope.msgs.$add({
+                                    msg: "Confirmou a devolução do livro",
+                                    user: {
+                                        email: $scope.user.email,
+                                        uid: $scope.user.uid
+                                    },
+                                    isEspecial: true
+                                });
+                                $scope.checkBtEspecial();
+                            });
+                        });
+                    }
                 }
             }
         }
@@ -159,27 +311,31 @@ angular.module('starter.controllers', [])
     .controller('NotificationsCtrl', function ($scope, $stateParams, Auth) {
     })
 
-    .controller('LivroPedirCtrl', function ($scope, $firebaseObject, $stateParams, $ionicHistory, $ionicPopup, Auth, Chats) {
+    .controller('LivroPedirCtrl', function ($scope, $rootScope, $firebaseObject, $state, $stateParams, $ionicHistory, $ionicPopup, Auth, Chats) {
         $scope.init = function () {
             Auth.checkLogin();
             $scope.user = Auth.user();
             if ($scope.user !== undefined) {
             }
             $scope.livro = $firebaseObject(database.ref($stateParams.idDono + "/livros/" + $stateParams.idLivro));
+
             Chats.chatsByUserAsPedinte($scope.user).$loaded(function (chats) {
+                // console.log(chats);
                 chats.forEach(chat => {
                     // Implementar estado do chat
                     if (chat.livro.uid == $stateParams.idLivro)
                         $scope.pedidoRealizado = true
+                    else
+                        $scope.pedidoRealizado = false
                 });
             });
         }
-        $scope.$on('$stateChangeStart', function (event, toState) {
+        $scope.init();
+        $rootScope.$on('$stateChangeStart', function (event, toState) {
             if (toState.name == "livro-pedir") {
                 $scope.init();
             }
         });
-        $scope.init();
         $scope.pedirEmprestado = function () {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Confirmar Pedido de empréstimo'
@@ -188,8 +344,8 @@ angular.module('starter.controllers', [])
             confirmPopup.then(function (res) {
                 if (res) {
                     Chats.pedidoEmprestimo($scope.livro, $scope.user)
-                    $ionicHistory.goBack();
-            }
+                    $state.go('tab.dash');
+                }
             });
 
         }
