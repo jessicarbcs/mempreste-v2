@@ -7,7 +7,7 @@
     </ion-header-bar>
     <ion-content>
         <ion-list>
-            <ion-item class="item-avatar item-icon-right" ng-repeat="chat in msgs" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+            <ion-item class="item-avatar item-icon-right" ng-repeat="chat in msgs" type="item-text-wrap" href="#/chats-detail/{{chat.id}}">
                 <img src="img/user.png">
                 <h2>{{chat.pessoa.nome}}</h2>
                 <p>{{chat.livro.nome}}</p>
