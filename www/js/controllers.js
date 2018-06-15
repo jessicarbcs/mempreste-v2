@@ -2,16 +2,12 @@ angular.module('starter.controllers', [])
 
     .controller('LoginCtrl', function ($scope, Auth) {
         $scope.cred = {
-            // email: "jessicarcarvalho@hotmail.com",
-            // email: "lcscvlcnt@gmail.com",
-            // senha: "123456"
             email: "",
             senha: ""
         };
         $scope.login = function () {
             Auth.login($scope.cred.email, $scope.cred.senha)
         };
-        // $scope.login();
     })
 
     .controller('RegistroCtrl', function ($scope, Auth, $ionicPopup) {
