@@ -32,16 +32,63 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
     color: #FFF
 }
 
-.msg-send {
+.msg-send:not(.msg-especial) {
     text-align: right;
+    float: right;
+}
+
+.msg-send:not(.msg-especial)::before {
+    display: block;
+    position: absolute;
+    content: " ";
+    width: 15px;
+    right: 1px;
+    border: 7px solid #FFF;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+}
+
+.msg-received:not(.msg-especial)::before {
+    display: block;
+    position: absolute;
+    content: " ";
+    width: 15px;
+    left: 1px;
+    border: 7px solid #FFF;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+
+.msg-send:not(.msg-especial), .msg-received:not(.msg-especial) {
+    padding: 4px 10px;
+    margin: 0 16px;
+    margin-top: 10px;
+    background: #FFF;
+    width: 80%;
 }
 
 .msg-especial {
-    text-align: center
+    text-align: center;
+    background-color: rgba(109, 109, 109, 1);
+    color: #FFF;
+    padding: 7px 36px;
+    width: 286px;
+    margin-top: 10px;
+    margin-left: calc((100% - 286px)/2)
+}
+
+.span-msg-especial {
+    color: rgba(255, 158, 68, 1);
+    font-weight: bold;
+    font-size: 13pt;
+    display: inline-block;
+    width: 100%
 }
 
 .login-input {
-    border-bottom: 1px solid #FFF !important 
+    border-bottom: 1px solid #FFF !important
 }
 
 .login-input::placeholder {
@@ -49,10 +96,40 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .input-registro {
-    border-bottom: 1px solid rgba(109, 109, 109, 0.5) !important ;
+    border-bottom: 1px solid rgba(109, 109, 109, 0.5) !important;
     color: rgba(109, 109, 109, 0.5);
 }
 
 .input-registro::placeholder {
     color: rgba(109, 109, 109, 0.5);
+}
+
+.chat-input label {
+    background: transparent;
+}
+
+.chat-input input {
+    color: #6D6D6D
+}
+
+.chat-input button {
+    background: transparent;
+    font-size: 21pt;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.btEspecial {
+    height: 48px;
+    width: 100%;
+    border: none;
+    color: #FFF;
+    border-radius: 4px;
+    background: #FF5D0B
+}
+
+.btEspecial:disabled {
+    border: 2px solid #C43C00;;
+    color: #C43C00;
+    background: transparent;
 }

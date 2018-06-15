@@ -1,15 +1,27 @@
 <ion-header-bar align-title="center" class="bar-positive">
     <h1 class="title">{{chat.livro.nome}}</h1>
 </ion-header-bar>
-<ion-content class="padding">
-    <ion-scroll direction="y" style="height: calc(100% - 92px);">
-        <div ng-repeat="msg in msgs" ng-class="{'msg-received': isReceived(msg), 'msg-send': !isReceived(msg), 'msg-especial': msg.isEspecial}">
-            {{msg.msg}}
+<ion-content class="padding" style="background-color: #EBEBEB; padding: 0">
+    <div style="width: 100%; height: 32px; background: #FFF; display: flex; align-items: center; padding-left: 16px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.16); ">
+        {{textoStatus}}
+    </div>
+    <ion-scroll direction="y" style="height: calc(100% - 164px);">
+        <div ng-repeat="msg in msgs" style="width: 100%; display: inline-block;">
+            <div ng-class="{'msg-received': isReceived(msg), 'msg-send': !isReceived(msg), 'msg-especial': msg.isEspecial}">
+                <span ng-show="msg.isEspecial" class="span-msg-especial">{{isReceived(msg) ? msg.user.email : 'Você'}}</span>
+                {{msg.msg}}
+            </div>
         </div>
     </ion-scroll>
-    <div style="width: 100%; text-align: center">
-        <button type="button" ng-click="execBtEspecial()" ng-disabled="disableBtEspecial" style="height: 48px; max-width: 328px; width: 100%; border: none; color: #FFF; background: #FF5D0B">{{msgBotaoEspecial}}</button>
+    <div style="width: 100%; text-align: center; padding: 16px">
+        <button type="button" ng-click="execBtEspecial()" ng-disabled="disableBtEspecial" class="btEspecial">{{msgBotaoEspecial}}</button>
     </div>
-    <input type="text" ng-model="msgToSave.msg" style="float: left;background: #f0f0f0; width: calc(100% - 55px);">
-    <button type="button" ng-click="send()" style="float: right; height: 34px; border: none; color: #FFF; background: #FF5D0B">Go!</button>
+    <div class="item item-input-inset chat-input">
+        <label class="item-input-wrapper">
+            <input type="text" ng-model="msgToSave.msg" placeholder="Escrever mensagem..." ng-disabled="chatEncerrado">
+        </label>
+        <button class="button button-small" ng-click="send()" ng-disabled="chatEncerrado">
+            <ion-icon name="arrow-forward" style="color: #FF5D0B"></ion-icon>
+        </button>
+    </div>
 </ion-content>
