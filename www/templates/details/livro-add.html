@@ -23,7 +23,7 @@
                     <img ng-show="livro.volumeInfo.imageLinks.thumbnail != undefined" ng-src="{{livro.volumeInfo.imageLinks.thumbnail}}" width="188"
                         height="262">
                     <div ng-show="livro.volumeInfo.imageLinks.thumbnail == undefined" style="width: 188px; height: 262px; border: 1px solid #6D6D6D; display: flex; align-items: center; justify-content: center; border-radius: 4px; flex-direction: column;">
-                        <button ng-if="!hasCamera" onclick="imgUpload.click(); return false;" style="width: 56px; height: 56px; background: #424242; color: #FFF; border: none; border-radius: 100%; display: flex; align-items: center; justify-content: center;">
+                        <!-- <button ng-if="!hasCamera" onclick="imgUpload.click(); return false;" style="width: 56px; height: 56px; background: #424242; color: #FFF; border: none; border-radius: 100%; display: flex; align-items: center; justify-content: center;">
                             <ion-icon name="cloud-upload"></ion-icon>
                         </button>
                         <input ng-if="!hasCamera" id="imgUpload" type="file" name="file" onchange="angular.element(this).scope().uploadFileFromInput(this.files)"
@@ -34,19 +34,19 @@
                         </button>
                         <button type="button" ng-if="hasCamera" ng-click="selectImg()" style="width: 56px; height: 56px; background: #424242; color: #FFF; border: none; border-radius: 100%; display: flex; align-items: center; justify-content: center;">
                             <ion-icon name="cloud-upload"></ion-icon>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <label class="item item-input" style="border-color: #FF9E44; margin-top: 16px">
-                    <input type="text" placeholder="Título" ng-model="livro.volumeInfo.title" ng-readonly="isByISBN">
+                    <input type="text" placeholder="Título" ng-model="livro.volumeInfo.title" ng-readonly="true">
                 </label>
                 <label class="item item-input" style="border-color: #FF9E44; margin-top: 16px">
-                    <input type="text" placeholder="Autores" ng-model="livro.volumeInfo.authors" ng-readonly="isByISBN">
+                    <input type="text" placeholder="Autores" ng-model="livro.volumeInfo.authors" ng-readonly="true">
                 </label>
                 <label class="item item-input" style="border-color: #FF9E44; margin-top: 16px">
-                    <input type="text" placeholder="Editora" ng-model="livro.volumeInfo.publisher" ng-readonly="isByISBN">
+                    <input type="text" placeholder="Editora" ng-model="livro.volumeInfo.publisher" ng-readonly="true">
                 </label>
-                <button type="submit" class="button button-positive" style="width: 100%; margin-top: 16px;">
+                <button type="submit" class="button button-positive" style="width: 100%; margin-top: 16px;" ng-disabled="!isByISBN">
                     CONFIRMAR
                 </button>
             </form>

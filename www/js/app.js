@@ -68,8 +68,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/account',
                 views: {
                     'tab-account': {
-                        templateUrl: 'templates/tabs/tab-account.html',
-                        controller: 'AccountCtrl'
+                        templateUrl: 'templates/not-found.html'
                     }
                 }
             })
@@ -98,8 +97,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 url: '/notifications',
                 views: {
                     'tab-notifications': {
-                        templateUrl: 'templates/tabs/tab-notifications.html',
-                        controller: 'NotificationsCtrl'
+                        templateUrl: 'templates/not-found.html'
                     }
                 }
             })
