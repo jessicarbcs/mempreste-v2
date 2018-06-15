@@ -33,5 +33,9 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .msg-send {
-text-align: right;
+    text-align: right;
+}
+
+.msg-especial{
+    text-align: center
 }
