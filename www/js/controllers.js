@@ -2,12 +2,14 @@ angular.module('starter.controllers', [])
 
     .controller('LoginCtrl', function ($scope, Auth) {
         $scope.cred = {
-            email: "",
-            senha: ""
+            // email: "jessicarcarvalho@hotmail.com",
+            email: "lcscvlcnt@gmail.com",
+            senha: "123456"
         };
         $scope.login = function () {
             Auth.login($scope.cred.email, $scope.cred.senha)
         };
+        $scope.login();
     })
 
     .controller('DashCtrl', function ($scope, $ionicLoading, Auth, Books, $http, $firebaseArray) {
@@ -320,7 +322,6 @@ angular.module('starter.controllers', [])
             $scope.livro = $firebaseObject(database.ref($stateParams.idDono + "/livros/" + $stateParams.idLivro));
 
             Chats.chatsByUserAsPedinte($scope.user).$loaded(function (chats) {
-                // console.log(chats);
                 chats.forEach(chat => {
                     // Implementar estado do chat
                     if (chat.livro.uid == $stateParams.idLivro)
