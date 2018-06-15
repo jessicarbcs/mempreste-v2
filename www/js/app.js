@@ -108,16 +108,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     }
                 }
             })
-            .state('tab.chat-detail', {
-                url: '/chats/:chatId',
-                views: {
-                    'tab-chats': {
-                        templateUrl: 'templates/details/chat-detail.html',
-                        controller: 'ChatDetailCtrl'
-                    }
-                }
-            })
 
+            .state('chat-detail', {
+                url: '/chats-detail/:chatId',
+                templateUrl: 'templates/details/chat-detail.html',
+                controller: 'ChatDetailCtrl'
+            })
             .state('livro-add', {
                 url: '/mybooks/:idLivro',
                 params: { time: null },
