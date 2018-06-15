@@ -36,6 +36,23 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
     text-align: right;
 }
 
-.msg-especial{
+.msg-especial {
     text-align: center
+}
+
+.login-input {
+    border-bottom: 1px solid #FFF !important 
+}
+
+.login-input::placeholder {
+    color: #FFF;
+}
+
+.input-registro {
+    border-bottom: 1px solid rgba(109, 109, 109, 0.5) !important ;
+    color: rgba(109, 109, 109, 0.5);
+}
+
+.input-registro::placeholder {
+    color: rgba(109, 109, 109, 0.5);
 }

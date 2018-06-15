@@ -51,6 +51,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 templateUrl: 'templates/login.html',
                 controller: 'LoginCtrl'
             })
+            .state('registro', {
+                url: '/registro',
+                templateUrl: 'templates/registro.html',
+                controller: 'RegistroCtrl'
+            })
 
             .state('tab', {
                 url: '/tab',

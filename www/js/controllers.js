@@ -3,13 +3,58 @@ angular.module('starter.controllers', [])
     .controller('LoginCtrl', function ($scope, Auth) {
         $scope.cred = {
             // email: "jessicarcarvalho@hotmail.com",
-            email: "lcscvlcnt@gmail.com",
-            senha: "123456"
+            // email: "lcscvlcnt@gmail.com",
+            // senha: "123456"
+            email: "",
+            senha: ""
         };
         $scope.login = function () {
             Auth.login($scope.cred.email, $scope.cred.senha)
         };
-        $scope.login();
+        // $scope.login();
+    })
+
+    .controller('RegistroCtrl', function ($scope, Auth, $ionicPopup) {
+        $scope.cadastro = new Object();
+        $scope.cadastrar = function () {
+            if ($scope.cadastro.matricula == undefined || $scope.cadastro.email == undefined || $scope.cadastro.senha == undefined) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Erro no cadastro',
+                    template: 'Todos os campos são obrigatórios.'
+                });
+            } else if (!Auth.listaMatriculas.includes($scope.cadastro.matricula.toString())) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Erro no cadastro',
+                    template: 'Matrícula inválida.'
+                });
+            } else if ($scope.cadastro.email.indexOf('@') == -1) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Erro no cadastro',
+                    template: 'Email inválido.'
+                });
+            } else if ($scope.cadastro.senha.trim().length < 6) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Erro no cadastro',
+                    template: 'Senha inválida. Deve conter no mínimo 6 caracteres.'
+                });
+            } else if ($scope.cadastro.senha != $scope.cadastro.confSenha) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Erro no cadastro',
+                    template: 'As senhas não coincidem.'
+                });
+            } else {
+                Auth.cadastro($scope.cadastro).then(function (firebaseUser) {
+                    console.log(firebaseUser);
+                    Auth.login($scope.cadastro.email, $scope.cadastro.senha)
+                }).catch(function (error) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Erro no cadastro',
+                        template: error.message
+                    });
+                });;
+            }
+
+        }
     })
 
     .controller('DashCtrl', function ($scope, $ionicLoading, Auth, Books, $http, $firebaseArray) {

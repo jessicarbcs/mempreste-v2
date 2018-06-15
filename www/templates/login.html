@@ -1,15 +1,23 @@
 <ion-view view-title="Login">
-    <ion-content class="padding" style="background-color: #C43C00">
+    <ion-content class="padding" style="background-color: #FF5D0B">
         <form id="loginForm" name="loginForm" ng-submit="login()">
-            <div class="list" style="margin-top: calc(100% - 180px);">
-                <label class="item item-input">
-                    <input type="text" placeholder="Email" ng-model="cred.email" required>
+            <img src="img/logo.png" width="208" style="margin-left: calc((100% - 208px) / 2); margin-top: 38px" />
+            <div class="list">
+                <label class="item item-input item-floating-label" style="border: none; padding: 0 16px;">
+                    <span style="color: #FFF" class="input-label">Email</span>
+                    <input style="color: #FFF" type="text" placeholder="Email" ng-model="cred.email" required class="login-input">
                 </label>
-                <label class="item item-input">
-                    <input type="password" placeholder="Senha" ng-model="cred.senha" required>
+                <label class="item item-input item-floating-label" style="border: none; padding: 0 16px;">
+                    <span style="color: #FFF" class="input-label">Senha</span>
+                    <input style="color: #FFF" type="password" placeholder="Senha" ng-model="cred.senha" required class="login-input">
                 </label>
             </div>
-            <button type="submit" class="google-sign-in button button-block">Login</button>
+            <div style="padding: 0 16px;">
+                <button type="submit" class="google-sign-in button button-block" style="background-color: #424242; color: #FFF">Login</button>
+            </div>
+            <p style="color: #FFF; text-align: center">ainda não tem uma conta?
+                <a href="#/registro" style="color: #FFF; font-weight: bold; text-decoration: none">registre-se aqui!</a>
+            </p>
         </form>
     </ion-content>
 </ion-view>
